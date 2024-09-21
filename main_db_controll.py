@@ -15,41 +15,26 @@ class DB_Controller:
     def init_table(self):
         self.open()
         self.cursor.execute(
-            '''CREATE TABLE IF NOT EXISTS question (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            question TEXT, max_score INTEGER, correct_answer TEXT, incorrect_answer TEXT)''')
+            '''CREATE TABLE IF NOT EXISTS patient (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            name TEXT, email TEXT, phone TEXT, URL TEXT, symptoms TEXT)''')
         self.close()
     
-    def init_data(self):
+    def get_data(self):
         self.open()
-        data = [
-            ("В якому році Україна стала незалежна?", 1, "Денис", "Мікаель"),
-            ("Який зараз рік?", 2, "2024", "1924"),
-            ("Скільки у людини хромосом?", 3, "46", "47"),
-            ("На якій планеті ви знаходитесь?", 4, "Денис", "Мікаель"),
-            ("Який зараз час?", 5, "2024", "1924"),
-            ("Скільки мені років?", 6, "46", "47")
-        ]
-        self.cursor.executemany(
-            '''INSERT INTO question (question, max_score, correct_answer, 
-            incorrect_answer) VALUES (?, ?, ?, ?)''', data
-            )
-        self.conn.commit()
-        self.close()
-    def get_data(self, max_score = 1):
-        self.open()
-        self.cursor.execute(
-            '''SELECT * FROM question WHERE max_score == ?''', str(max_score)
-            )
+        self.cursor.execute('''SELECT * FROM patient''')
         data = self.cursor.fetchall()
         self.close()
         return data
+
+    def add_data(self, data):
+        self.open()
+        self.cursor.execute('''INSERT INTO patient (name, email, phone, URL, symptoms) VALUES (?, ?, ?, ?, ?)''', data)
+        self.conn.commit()
+        self.close()
 
     def close(self):
         self.cursor.close()
         self.conn.close()
 
-db = DB_Controller('question.db')
-# db.init_table()
-# db.init_data()
-# db.get_data()
-# db.close()
+db = DB_Controller('main.db')
+db.init_table()

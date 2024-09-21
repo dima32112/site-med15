@@ -3,20 +3,35 @@
 
 <head>
     <title>Сайт</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/answer.css') }}">
 </head>
 
 <body>
-    <p>
-        {{obj['first_name'][0]}}
-        <!-- {{obj['first_name']}} -->
-    </p>
-    <p>
-        {% for color in obj['color'] %}
-        <p>
-            {{color}}
-        </p>
-        {% endfor %}
-    </p>
+    <div class="table-title">
+        <h3>Data Table</h3>
+    </div>
+    <table class="table-fill">
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Phone</th>
+                <th class="text-center">URL</th>
+                <th class="text-center">Symptoms</th>
+            </tr>
+        </thead>
+        <tbody class="table-hover">
+            {% for patient in data %}
+            <tr>
+                {% for info in patient %}
+                <td class="text-center">{{info}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </body>
 
 </html>
